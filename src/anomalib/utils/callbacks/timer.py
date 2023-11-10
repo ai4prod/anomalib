@@ -66,7 +66,8 @@ class TimerCallback(Callback):
 
         if trainer.test_dataloaders is not None:  # Check to placate Mypy.
             for dataloader in trainer.test_dataloaders:
-                self.num_images += len(dataloader.dataset)
+                print(dataloader)
+                self.num_images += len(dataloader["image_path"])
 
     def on_test_end(self, trainer: Trainer, pl_module: LightningModule) -> None:  # pylint: disable=W0613
         """Call when the test ends.

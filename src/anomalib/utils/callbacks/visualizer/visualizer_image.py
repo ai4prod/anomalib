@@ -29,12 +29,12 @@ class ImageVisualizerCallback(BaseVisualizerCallback):
 
     def on_predict_batch_end(
         self,
-        trainer: pl.Trainer,
-        pl_module: AnomalyModule,
-        outputs: STEP_OUTPUT | None,
+        trainer: "pl.Trainer",
+        pl_module: "pl.LightningModule",
+        outputs: Any,
         batch: Any,
         batch_idx: int,
-        dataloader_idx: int,
+        dataloader_idx: int = 0,
     ) -> None:
         """Show images at the end of every batch.
 
@@ -60,12 +60,12 @@ class ImageVisualizerCallback(BaseVisualizerCallback):
 
     def on_test_batch_end(
         self,
-        trainer: pl.Trainer,
-        pl_module: AnomalyModule,
-        outputs: STEP_OUTPUT | None,
+        trainer: "pl.Trainer",
+        pl_module: "pl.LightningModule",
+        outputs: STEP_OUTPUT,
         batch: Any,
         batch_idx: int,
-        dataloader_idx: int,
+        dataloader_idx: int = 0,
     ) -> None:
         """Log images at the end of every batch.
 

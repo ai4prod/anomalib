@@ -61,12 +61,12 @@ class CdfNormalizationCallback(Callback):
 
     def on_validation_batch_end(
         self,
-        trainer: pl.Trainer,
-        pl_module: AnomalyModule,
-        outputs: STEP_OUTPUT | None,
+        trainer: "pl.Trainer",
+        pl_module: "pl.LightningModule",
+        outputs: STEP_OUTPUT,
         batch: Any,
         batch_idx: int,
-        dataloader_idx: int,
+        dataloader_idx: int = 0,
     ) -> None:
         """Called when the validation batch ends, standardizes the predicted scores and anomaly maps."""
         del trainer, batch, batch_idx, dataloader_idx  # These variables are not used.
@@ -75,12 +75,12 @@ class CdfNormalizationCallback(Callback):
 
     def on_test_batch_end(
         self,
-        trainer: pl.Trainer,
-        pl_module: AnomalyModule,
-        outputs: STEP_OUTPUT | None,
+        trainer: "pl.Trainer",
+        pl_module: "pl.LightningModule",
+        outputs: STEP_OUTPUT,
         batch: Any,
         batch_idx: int,
-        dataloader_idx: int,
+        dataloader_idx: int = 0,
     ) -> None:
         """Called when the test batch ends, normalizes the predicted scores and anomaly maps."""
         del trainer, batch, batch_idx, dataloader_idx  # These variables are not used.
@@ -90,12 +90,12 @@ class CdfNormalizationCallback(Callback):
 
     def on_predict_batch_end(
         self,
-        trainer: pl.Trainer,
-        pl_module: AnomalyModule,
-        outputs: dict,
+        trainer: "pl.Trainer",
+        pl_module: "pl.LightningModule",
+        outputs: Any,
         batch: Any,
         batch_idx: int,
-        dataloader_idx: int,
+        dataloader_idx: int = 0,
     ) -> None:
         """Called when the predict batch ends, normalizes the predicted scores and anomaly maps."""
         del trainer, batch, batch_idx, dataloader_idx  # These variables are not used.
