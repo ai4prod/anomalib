@@ -170,14 +170,14 @@ class AnomalyModule(pl.LightningModule, ABC):
         Args:
             outputs: Batch of outputs from the validation step
         """
-
-        for out in self.test_step_outputs:
+        #Predict Is calling validation step
+        for out in self.validation_step_outputs:
                 self._outputs_to_cpu(out)
                 self._post_process(out)
 
-        self._collect_outputs(self.image_metrics, self.pixel_metrics, self.test_step_outputs)
+        self._collect_outputs(self.image_metrics, self.pixel_metrics, self.validation_step_outputs)
         self._log_metrics()
-        self.test_step_outputs.clear()
+        self.validation_step_outputs.clear()
 
     def _compute_adaptive_threshold(self, outputs: STEP_OUTPUT) -> None:
         self.image_threshold.reset()
