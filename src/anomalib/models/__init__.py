@@ -23,7 +23,7 @@ from anomalib.models.dfm import Dfm
 from anomalib.models.draem import Draem
 from anomalib.models.efficient_ad import EfficientAd
 from anomalib.models.fastflow import Fastflow
-from anomalib.models.ganomaly import Ganomaly
+#from anomalib.models.ganomaly import Ganomaly
 from anomalib.models.padim import Padim
 from anomalib.models.patchcore import Patchcore
 from anomalib.models.reverse_distillation import ReverseDistillation

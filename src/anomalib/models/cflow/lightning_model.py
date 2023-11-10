@@ -172,6 +172,7 @@ class Cflow(AnomalyModule):
         del args, kwargs  # These variables are not used.
 
         batch["anomaly_maps"] = self.model(batch["image"])
+        self.validation_step_outputs.append(batch)
         return batch
 
 
