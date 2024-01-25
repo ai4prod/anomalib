@@ -450,7 +450,7 @@ class MobileOneFeatureExtractor(nn.Module):
         self.layers = OmegaConf.to_object(layers)
         #self.layers= ["stage1","stage2","stage3"]
         #TODO: automaticLoading of Model
-        checkpoint = torch.load('/home/Develop/ai4prod_python/anomaly_detection/anomalib_mlops/anomalib/src/anomalib/models/cflow_custom/mobileone_s1.pth.tar')
+        checkpoint = torch.load('/home/Develop/Models/mobilone/mobileone_s1.pth.tar')
         model_eval.load_state_dict(checkpoint)
     
     
@@ -467,7 +467,8 @@ class MobileOneFeatureExtractor(nn.Module):
         
         #Setup Output Dim
         self.out_dims =[]
-        
+        #This value could be anything beacause for the model the
+        #important value is the number of channels, Height and Width could be any
         t=torch.rand(1,3,224,224)
         
         outs= self.feature_extractor(t)

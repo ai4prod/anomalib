@@ -80,6 +80,10 @@ class Cflow(AnomalyModule):
             params=decoders_parameters,
             lr=self.learning_rate,
         )
+        
+        # optimizer= optim.AdamW(
+        #         decoders_parameters,
+        #         self.learning_rate)
         return optimizer
 
     def training_step(self, batch: dict[str, str | Tensor], *args, **kwargs) -> STEP_OUTPUT:
