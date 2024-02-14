@@ -15,7 +15,7 @@ from anomalib.models.cflow_custom.anomaly_map import AnomalyMapGenerator
 from anomalib.models.cflow_custom.utils import cflow_head, get_logp, positional_encoding_2d
 from anomalib.models.components import FeatureExtractor
 
-from anomalib.models.cflow_custom.mobilone import MobileOneFeatureExtractor
+from anomalib.models.cflow_custom.feature_extraction_custom import MobileOneFeatureExtractor,FastVitFeatureExtractor
 
 class CflowModel(nn.Module):
     """CFLOW: Conditional Normalizing Flows."""
@@ -41,7 +41,14 @@ class CflowModel(nn.Module):
         self.dec_arch = decoder
         self.pool_layers = layers
 
-        self.encoder = MobileOneFeatureExtractor(layers=self.pool_layers, pre_trained=pre_trained)
+        #self.encoder = MobileOneFeatureExtractor(layers=self.pool_layers, pre_trained=pre_trained)
+        
+        #Condition for fastVit
+        if(True):
+            self.pool_layers=[0,1,2]    
+        self.encoder= FastVitFeatureExtractor()
+        
+        
         self.pool_dims = self.encoder.out_dims
         self.decoders = nn.ModuleList(
             [
@@ -86,6 +93,13 @@ class CflowModel(nn.Module):
             encoder_activations = activation[layer]  # BxCxHxW
 
             batch_size, dim_feature_vector, im_height, im_width = encoder_activations.size()
+            
+            print("DIMENSION")
+            print(f"CHANNELS {dim_feature_vector}")
+            print(f"HEIGHT {dim_feature_vector}")
+            print(f"WIDTH {dim_feature_vector}")
+            print(f"BATCH {batch_size}")
+ 
             image_size = im_height * im_width
             embedding_length = batch_size * image_size  # number of rows in the conditional vector
 
@@ -105,15 +119,25 @@ class CflowModel(nn.Module):
             # It is assumed that during training that E / N is a whole number as no errors were discovered during
             # testing. In case it is observed in the future, we can use only this line and ensure that FIB is at
             # least 1 or set `drop_last` in the dataloader to drop the last non-full batch.
+            
+            
             fiber_batches = embedding_length // self.fiber_batch_size + int(
                 embedding_length % self.fiber_batch_size > 0
             )
-
+            # print("FIBER BATCHES")
+            # print(fiber_batches)
+            # print(c_r.size())
+            print(f"FIBER BATCHES {fiber_batches}")
+            print(f"EMBEDDING LENGHT {embedding_length}")
+            
+            
+            
             for batch_num in range(fiber_batches):  # per-fiber processing
                 if batch_num < (fiber_batches - 1):
                     idx = torch.arange(batch_num * self.fiber_batch_size, (batch_num + 1) * self.fiber_batch_size)
                 else:  # When non-full batch is encountered batch_num+1 * N will go out of bounds
                     idx = torch.arange(batch_num * self.fiber_batch_size, embedding_length)
+                
                 c_p = c_r[idx]  # NxP
                 e_p = e_r[idx]  # NxC
                 # decoder returns the transformed variable z and the log Jacobian determinant

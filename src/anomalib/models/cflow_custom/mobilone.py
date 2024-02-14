@@ -396,7 +396,7 @@ PARAMS = {
 }
 
 
-def mobileone(num_classes: int = 1000, inference_mode: bool = False,
+def mobilone(num_classes: int = 1000, inference_mode: bool = False,
               variant: str = "s0") -> nn.Module:
     """Get MobileOne model.
 
@@ -498,6 +498,9 @@ class MobileOneFeatureExtractor(nn.Module):
         # return features
         
         return self.feature_extractor(inputs)
+
+
+
 
 if __name__== "__main__":
     

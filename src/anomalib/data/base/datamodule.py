@@ -177,7 +177,7 @@ class AnomalibDataModule(LightningDataModule, ABC):
     def train_dataloader(self) -> TRAIN_DATALOADERS:
         """Get train dataloader."""
         return DataLoader(
-            dataset=self.train_data, shuffle=True, batch_size=self.train_batch_size, num_workers=self.num_workers
+            dataset=self.train_data, shuffle=True, batch_size=self.train_batch_size, num_workers=self.num_workers,drop_last=True
         )
 
     def val_dataloader(self) -> EVAL_DATALOADERS:
@@ -188,6 +188,7 @@ class AnomalibDataModule(LightningDataModule, ABC):
             batch_size=self.eval_batch_size,
             num_workers=self.num_workers,
             collate_fn=collate_fn,
+            drop_last=True
         )
 
     def test_dataloader(self) -> EVAL_DATALOADERS:
@@ -198,4 +199,5 @@ class AnomalibDataModule(LightningDataModule, ABC):
             batch_size=self.eval_batch_size,
             num_workers=self.num_workers,
             collate_fn=collate_fn,
+            drop_last=True
         )
