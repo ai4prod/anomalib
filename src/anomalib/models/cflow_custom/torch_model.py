@@ -41,12 +41,12 @@ class CflowModel(nn.Module):
         self.dec_arch = decoder
         self.pool_layers = layers
 
-        #self.encoder = MobileOneFeatureExtractor(layers=self.pool_layers, pre_trained=pre_trained)
+        self.encoder = MobileOneFeatureExtractor(layers=self.pool_layers, pre_trained=pre_trained)
         
-        #Condition for fastVit
-        if(True):
-            self.pool_layers=[0,1,2]    
-        self.encoder= FastVitFeatureExtractor()
+        # #Condition for fastVit
+        # if(True):
+        #     self.pool_layers=[0,1,2]    
+        # self.encoder= FastVitFeatureExtractor()
         
         
         self.pool_dims = self.encoder.out_dims
@@ -66,6 +66,11 @@ class CflowModel(nn.Module):
         # encoder model is fixed
         for parameters in self.encoder.parameters():
             parameters.requires_grad = False
+
+        print(len(list(self.encoder.parameters())))
+        input("LIST PARAM")
+        for param in list(self.encoder.parameters())[-80:]:
+             param.requires_grad = True
 
         self.anomaly_map_generator = AnomalyMapGenerator(image_size=input_size, pool_layers=self.pool_layers)
 

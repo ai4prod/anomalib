@@ -81,6 +81,12 @@ class Cflow(AnomalyModule):
             lr=self.learning_rate,
         )
         
+        # optimizer = optim.Adam(
+        #     params=self.model.encoder.parameters(),
+        #     lr=self.learning_rate,
+        # )
+        
+
         # optimizer= optim.AdamW(
         #         decoders_parameters,
         #         self.learning_rate)
@@ -103,7 +109,7 @@ class Cflow(AnomalyModule):
         del args, kwargs  # These variables are not used.
 
         opt = self.optimizers()
-        self.model.encoder.eval()
+        #self.model.encoder.eval()
 
         images: Tensor = batch["image"]
         activation = self.model.encoder(images)
@@ -131,7 +137,10 @@ class Cflow(AnomalyModule):
             perm = torch.randperm(embedding_length)  # BHW
             decoder = self.model.decoders[layer_idx].to(images.device)
 
+            # print(f"Embedding Length: {embedding_length}")
+            # print(f"Fiber Batch Size: {self.model.fiber_batch_size}")
             fiber_batches = embedding_length // self.model.fiber_batch_size  # number of fiber batches
+            #print(f"EMBEDDING LENGTH: {embedding_length}")
             assert fiber_batches > 0, "Make sure we have enough fibers, otherwise decrease N or batch-size!"
 
             for batch_num in range(fiber_batches):  # per-fiber processing
@@ -176,6 +185,9 @@ class Cflow(AnomalyModule):
         del args, kwargs  # These variables are not used.
 
         batch["anomaly_maps"] = self.model(batch["image"])
+        # batch["anomaly_maps"]=batch["anomaly_maps"].detach().cpu()
+        # batch["image"]=batch["image"].detach().cpu()
+        # print(batch.keys())
         self.validation_step_outputs.append(batch)
         return batch
 

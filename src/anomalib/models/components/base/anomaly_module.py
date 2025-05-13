@@ -48,6 +48,9 @@ class AnomalyModule(pl.LightningModule, ABC):
         self.image_threshold = AnomalyScoreThreshold().cpu()
         self.pixel_threshold = AnomalyScoreThreshold().cpu()
 
+        print("PIXEL THRESHOLD",self.pixel_threshold.value)
+        print("IMAGE THRESHOLD",self.image_threshold.value)
+        input("t")
         self.normalization_metrics: Metric
 
         self.image_metrics: AnomalibMetricCollection
@@ -94,8 +97,16 @@ class AnomalyModule(pl.LightningModule, ABC):
         self._post_process(outputs)
         if outputs is not None and isinstance(outputs, dict):
             outputs["pred_labels"] = outputs["pred_scores"] >= self.image_threshold.value
+            #outputs["pred_labels"]=outputs["pred_scores"] >= 1.24
+            print("IMAGE THRESHOLD VALUE",self.image_threshold.value)
+            print("PIXEL THRESHOLD VALUE",self.pixel_threshold.value)
+            # input("t")
             if "anomaly_maps" in outputs.keys():
+                #self.pixel_threshold.value = 1.20
+                #score_value=0.6700
                 outputs["pred_masks"] = outputs["anomaly_maps"] >= self.pixel_threshold.value
+                #outputs["pred_masks"] = outputs["anomaly_maps"] >= score_value
+                
                 if "pred_boxes" not in outputs.keys():
                     outputs["pred_boxes"], outputs["box_scores"] = masks_to_boxes(
                         outputs["pred_masks"], outputs["anomaly_maps"]

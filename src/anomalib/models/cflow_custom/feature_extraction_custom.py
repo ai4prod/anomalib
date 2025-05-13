@@ -64,20 +64,27 @@ class MobileOneFeatureExtractor(nn.Module):
         super().__init__()
 
         # Extract backbone-name and weight-URI from the backbone string.
-        model = mobilone(variant='s1')
+        model = mobilone(variant='s3')
         model.eval()      
         model_eval = reparameterize_model(model)
         
-        self.layers = OmegaConf.to_object(layers)
+        #self.layers = OmegaConf.to_object(layers)
         #self.layers= ["stage1","stage2","stage3"]
+
+        ##self.layers= ["stage3","stage4"] Otttimo risultato nella saldatura. Si concentra molto sull'immagine globale
+        self.layers=["stage4"]
         #TODO: automaticLoading of Model
-        checkpoint = torch.load('/home/Develop/Models/mobilone/mobileone_s1.pth.tar')
+        #checkpoint = torch.load('/home/Develop/Models/mobilone/mobileone_s1.pth.tar')
+        checkpoint = torch.load('/home/Develop/ai4prod_python/anomaly_detection/anomalib_mlops/anomalib/src/anomalib/models/cflow_custom/mobileone_s3.pth.tar')
         model_eval.load_state_dict(checkpoint)
-    
-    
+        
+        
+        t=torch.rand(1,3,128,128)
+        
         self.feature_extractor=create_feature_extractor(
             model_eval, return_nodes=self.layers)
         
+
         #self.idx = self._map_layer_to_idx()
         self.requires_grad = requires_grad
         
@@ -90,7 +97,7 @@ class MobileOneFeatureExtractor(nn.Module):
         self.out_dims =[]
         #This value could be anything beacause for the model the
         #important value is the number of channels, Height and Width could be any
-        t=torch.rand(1,3,224,224)
+       
         
         outs= self.feature_extractor(t)
         
