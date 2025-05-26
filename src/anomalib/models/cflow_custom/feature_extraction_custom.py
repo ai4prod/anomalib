@@ -5,7 +5,7 @@ from torchvision.models.feature_extraction import create_feature_extractor
 from typing import Optional, List, Tuple,Dict
 from torch import Tensor
 import torch
-
+import os
 import anomalib.models.cflow_custom.fast_vit_models as fast_vit_models
 
 class FastVitFeatureExtractor(nn.Module):
@@ -75,7 +75,13 @@ class MobileOneFeatureExtractor(nn.Module):
         self.layers=["stage4"]
         #TODO: automaticLoading of Model
         #checkpoint = torch.load('/home/Develop/Models/mobilone/mobileone_s1.pth.tar')
-        checkpoint = torch.load('/home/Develop/ai4prod_python/anomaly_detection/anomalib_mlops/anomalib/src/anomalib/models/cflow_custom/mobileone_s3.pth.tar')
+        model_filename = "mobileone_s3.pth.tar"
+        target_subfolder = "models"
+        
+        script_dir = os.path.dirname(__file__)
+
+
+        checkpoint = torch.load(os.path.join(script_dir, target_subfolder,model_filename))
         model_eval.load_state_dict(checkpoint)
         
         
