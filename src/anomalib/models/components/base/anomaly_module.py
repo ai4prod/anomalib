@@ -50,7 +50,6 @@ class AnomalyModule(pl.LightningModule, ABC):
 
         print("PIXEL THRESHOLD",self.pixel_threshold.value)
         print("IMAGE THRESHOLD",self.image_threshold.value)
-        input("t")
         self.normalization_metrics: Metric
 
         self.image_metrics: AnomalibMetricCollection
