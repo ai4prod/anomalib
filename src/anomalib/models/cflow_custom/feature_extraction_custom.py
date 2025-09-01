@@ -7,7 +7,7 @@ from torch import Tensor
 import torch
 import os
 import anomalib.models.cflow_custom.fast_vit_models as fast_vit_models
-
+from omegaconf import DictConfig, OmegaConf,open_dict
 class FastVitFeatureExtractor(nn.Module):
     
     def __init__(self,):
@@ -72,7 +72,7 @@ class MobileOneFeatureExtractor(nn.Module):
         #self.layers= ["stage1","stage2","stage3"]
 
         ##self.layers= ["stage3","stage4"] Otttimo risultato nella saldatura. Si concentra molto sull'immagine globale
-        self.layers=["stage4"]
+        self.layers=OmegaConf.to_object(layers)
         
         base_path="/home/Develop/Models/"
         model_filename = "mobileone_s3.pth.tar"

@@ -117,6 +117,14 @@ class Cflow(AnomalyModule):
 
         height = []
         width = []
+
+        #Gestione automatica del numero di fiber_batches in base al layer più piccolo
+        encoder_smaller_activation= activation[self.model.pool_layers[-1]]
+
+        batch_size, dim_feature_vector, im_height, im_width = encoder_smaller_activation.size()
+        # In questo modo il modello utilizza le fiber batches più grosse per velocizzare l'esecuzione
+        self.model.fiber_batch_size= batch_size*im_height*im_width
+
         for layer_idx, layer in enumerate(self.model.pool_layers):
             encoder_activations = activation[layer].detach()  # BxCxHxW
 

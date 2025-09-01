@@ -41,6 +41,7 @@ class CflowModel(nn.Module):
         self.dec_arch = decoder
         self.pool_layers = layers
 
+
         self.encoder = MobileOneFeatureExtractor(layers=self.pool_layers, pre_trained=pre_trained)
         
         # #Condition for fastVit
@@ -72,6 +73,8 @@ class CflowModel(nn.Module):
 
         self.anomaly_map_generator = AnomalyMapGenerator(image_size=input_size, pool_layers=self.pool_layers)
 
+        
+
     def forward(self, images) -> Any:
         """Forward-pass images into the network to extract encoder features and compute probability.
 
@@ -92,15 +95,17 @@ class CflowModel(nn.Module):
 
         height: list[int] = []
         width: list[int] = []
-        for layer_idx, layer in enumerate(self.pool_layers):
+
+        
+        for layer_idx, layer in list(enumerate(self.pool_layers)):
             encoder_activations = activation[layer]  # BxCxHxW
 
             batch_size, dim_feature_vector, im_height, im_width = encoder_activations.size()
             
             print("DIMENSION")
             print(f"CHANNELS {dim_feature_vector}")
-            print(f"HEIGHT {dim_feature_vector}")
-            print(f"WIDTH {dim_feature_vector}")
+            print(f"HEIGHT {im_height}")
+            print(f"WIDTH {im_height}")
             print(f"BATCH {batch_size}")
  
             image_size = im_height * im_width
