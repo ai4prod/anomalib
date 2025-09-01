@@ -67,8 +67,6 @@ class CflowModel(nn.Module):
         for parameters in self.encoder.parameters():
             parameters.requires_grad = False
 
-        print("ENCODER PARAMETERS", len(list(self.encoder.parameters())))
-
         for param in list(self.encoder.parameters())[-80:]:
              param.requires_grad = True
 

@@ -73,15 +73,12 @@ class MobileOneFeatureExtractor(nn.Module):
 
         ##self.layers= ["stage3","stage4"] Otttimo risultato nella saldatura. Si concentra molto sull'immagine globale
         self.layers=["stage4"]
-        #TODO: automaticLoading of Model
-        #checkpoint = torch.load('/home/Develop/Models/mobilone/mobileone_s1.pth.tar')
-        model_filename = "mobileone_s3.pth.tar"
-        target_subfolder = "models"
         
-        script_dir = os.path.dirname(__file__)
-
-
-        checkpoint = torch.load(os.path.join(script_dir, target_subfolder,model_filename))
+        base_path="/home/Develop/Models/"
+        model_filename = "mobileone_s3.pth.tar"
+        
+        
+        checkpoint = torch.load(os.path.join(base_path, model_filename))
         model_eval.load_state_dict(checkpoint)
         
         
