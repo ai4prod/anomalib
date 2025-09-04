@@ -59,16 +59,26 @@ def get_callbacks(config: DictConfig | ListConfig) -> list[Callback]:
 
     monitor_metric = None if "early_stopping" not in config.model.keys() else config.model.early_stopping.metric
     monitor_mode = "max" if "early_stopping" not in config.model.keys() else config.model.early_stopping.mode
-
-    print(monitor_metric, monitor_mode)
-    checkpoint = ModelCheckpoint(
-        dirpath=os.path.join(config.project.path, "weights", "lightning"),
-        filename="{epoch}-{image_AUROC:.4f}",
-        save_top_k=-1,
-        monitor="image_AUROC",
-        mode="max",
-        auto_insert_metric_name=False,
-    )
+    checkpoint= None
+    # Save all models based on Metrics
+    if (config.general_cfg.save_all_models):
+        checkpoint = ModelCheckpoint(
+            dirpath=os.path.join(config.project.path, "weights", "lightning"),
+            filename="{epoch}-{"+str(monitor_metric)+":.4f}" if monitor_metric is not None else "{epoch}",#filename="{epoch}-{image_AUROC:.4f}",
+            save_top_k=-1,
+            monitor="image_AUROC",
+            mode="max",
+            auto_insert_metric_name=False,
+        )
+    else:
+        checkpoint = ModelCheckpoint(
+            dirpath=os.path.join(config.project.path, "weights", "lightning"),
+            filename="{epoch}-{"+str(monitor_metric)+":.4f}" if monitor_metric is not None else "{epoch}",
+            save_top_k=1 if monitor_metric is not None else 3,
+            monitor=monitor_metric,
+            mode=monitor_mode,
+            auto_insert_metric_name=False,
+        )
 
     callbacks.extend([checkpoint, TimerCallback()])
 
