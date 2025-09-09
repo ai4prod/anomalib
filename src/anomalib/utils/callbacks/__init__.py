@@ -73,7 +73,7 @@ def get_callbacks(config: DictConfig | ListConfig) -> list[Callback]:
     else:
         checkpoint = ModelCheckpoint(
             dirpath=os.path.join(config.project.path, "weights", "lightning"),
-            filename="{epoch}-{"+str(monitor_metric)+":.4f}" if monitor_metric is not None else "{epoch}",
+            filename="model",
             save_top_k=1 if monitor_metric is not None else 3,
             monitor=monitor_metric,
             mode=monitor_mode,
