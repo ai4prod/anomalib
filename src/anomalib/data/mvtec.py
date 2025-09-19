@@ -48,7 +48,7 @@ from anomalib.data.utils import (
 logger = logging.getLogger(__name__)
 
 
-IMG_EXTENSIONS = [".png", ".PNG",".Png"]
+IMG_EXTENSIONS = [".png", ".PNG",".Png",".jpg", ".jpeg", ".JPEG", ".JPG"]
 
 DOWNLOAD_INFO = DownloadInfo(
     name="mvtec",

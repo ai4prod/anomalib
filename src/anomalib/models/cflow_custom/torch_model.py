@@ -95,7 +95,8 @@ class CflowModel(nn.Module):
 
         height: list[int] = []
         width: list[int] = []
-
+        
+        print(f"Images size {images.size()}")
         
         for layer_idx, layer in list(enumerate(self.pool_layers)):
             encoder_activations = activation[layer]  # BxCxHxW
